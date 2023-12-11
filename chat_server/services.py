@@ -4,6 +4,8 @@ import logging
 import logging.config
 import socket
 import select
+import threading
+# import queue
 
 from toml import TomlDecodeError
 
@@ -114,6 +116,9 @@ def server_client_connection():
 
                 user = clients[notified_socket]
                 print(f'Received message from {user["data"].decode("utf-8")}: {message["data"].decode("utf-8")}')
+                user_name = user["data"].decode("utf-8")
+                user_message = message["data"].decode("utf-8")
+
 
 
                 if message["data"].decode("utf-8").lower() == "quit":
@@ -138,10 +143,10 @@ def broacast_message_to_all():
 
 def start_server():
     logging.info("Starting Chat Server")
-    
-    server_client_connection()
+    server_client_connection_thread = threading.Thread(target=server_client_connection, args=())
+    server_client_connection_thread.start()
+    # server_client_connection()
 
-    # server = create_socket_server()
 
     # insert_batch()
     # read_one()

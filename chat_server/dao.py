@@ -46,7 +46,7 @@ def update_one():
     ENGINE = chat_server_create_engine()
 
     with sessionmaker(bind=ENGINE)() as session:
-        result = session.query(ChatServerMessage).filter(ChatServerMessage.username=='rzu7').first()
+        result = session.query(ChatServerMessage).filter(ChatServerMessage.username=='rzu').first()
         
         result.username = result.username + "x"
 
