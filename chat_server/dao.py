@@ -2,6 +2,8 @@
 from chat_server.db import chat_server_create_engine
 from chat_server.models.chat_server_autogen import ChatServerMessage
 from sqlalchemy.orm import sessionmaker
+from chat_server import config
+import logging
 
 def insert_one():
     """
@@ -9,13 +11,22 @@ def insert_one():
     """
     ENGINE = chat_server_create_engine()
 
-    with sessionmaker(bind=ENGINE)() as session:
-        message = ChatServerMessage(
-            username="rzu1"
-        )
+    if  not config.TABLE_DATA.empty():
+        logging.info("insert_one function")
+        temporary_data = config.TABLE_DATA.get()
+        temporary_name = temporary_data['name']
+        print(temporary_name)
+        temporary_message = temporary_data['message']
+        print(temporary_message)
 
-        session.add(message)
-        session.commit()
+        with sessionmaker(bind=ENGINE)() as session:
+            message = ChatServerMessage(
+                username = temporary_name,
+                message = temporary_message
+            )
+
+            session.add(message)
+            session.commit()
 
     # with ENGINE.connect() as con:
     #     query = "INSERT INTO chat_server_messages (username) VALUES ('rzud');"

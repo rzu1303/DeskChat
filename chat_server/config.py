@@ -26,3 +26,6 @@ AGENT_CONFIG = None
 IP = "127.0.0.1"
 PORT = 1234
 HEADER_LENGTH = 10
+TABLE_DATA = queue.Queue()
+
+temporary_router_quit = True

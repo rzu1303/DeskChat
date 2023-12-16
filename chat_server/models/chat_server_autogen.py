@@ -13,5 +13,6 @@ class ChatServerMessage(Base):
 
     id = Column(UUID, primary_key=True, server_default=FetchedValue())
     username = Column(String(64))
+    message = Column(String(500))
     updated_at = Column(DateTime(timezone=True), default=func.now())
     created_at = Column(DateTime(timezone=True), default=func.now())

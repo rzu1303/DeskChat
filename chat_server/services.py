@@ -83,7 +83,8 @@ def server_client_connection():
     server_socket.listen()
     sockets_list = [server_socket]
     clients = {}
-    print(f'Listening for connections on IP = {IP} at PORT = {PORT}')
+    # print(f'Listening for connections on IP = {IP} at PORT = {PORT}')
+    logging.info("Listening for connections on IP = {IP} at PORT = {PORT}")
 
     while True:
         read_sockets, _, exception_sockets = select.select(sockets_list, [], sockets_list)
@@ -119,13 +120,24 @@ def server_client_connection():
                 user_name = user["data"].decode("utf-8")
                 user_message = message["data"].decode("utf-8")
 
+                config.TABLE_DATA.put(
+                    {
+                        'name': user_name,
+                        'message': user_message
+                    }
+                )
 
+                # # Checking name and message
+                # while not config.TABLE_DATA.empty():
+                #     item = config.TABLE_DATA.get()
+                #     print(f"checking Name: {item['name']}, Message: {item['message']}")
 
                 if message["data"].decode("utf-8").lower() == "quit":
                     print("Server shutting down...")
                     for client_socket in sockets_list:
                         if client_socket != server_socket:
                             client_socket.close()
+                    config.temporary_router_quit = False        
                     server_socket.close()
                     exit()
 
@@ -147,10 +159,12 @@ def start_server():
     server_client_connection_thread.start()
     # server_client_connection()
 
-
+    
     # insert_batch()
     # read_one()
-    update_one()
+    # update_one() 
+    while config.temporary_router_quit:
+        insert_one()
 
     # while True:  
     #     logger.info("waiting for connection")
