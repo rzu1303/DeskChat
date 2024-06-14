@@ -17,7 +17,10 @@ Stores chat messages in a PostgreSQL database.
 Supports basic database operations like insert, update, and read.    
 
 Usage:  
-To start the chat server, run the __main__.py file with an optional configuration file argument.    
+Launch the GUI application by running __main__.py.  
+Connect to the chat server to start sending and receiving messages.  
+he messages will be displayed in real-time within the application.  
+
 
 Database Setup:  
 The server uses PostgreSQL to store chat messages. Ensure that you have PostgreSQL installed and running. The database schema is defined in chat_server/models/create.py.    
